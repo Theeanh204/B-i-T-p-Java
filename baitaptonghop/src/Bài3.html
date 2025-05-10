@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển Đổi Nhiệt Độ</title>
+    <link rel="stylesheet" href="Bai3.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Chuyển Đổi Nhiệt Độ</h1>
+        <p class="text-center">Tổng số yêu cầu: <span id="requestCount">0</span></p>
+        
+        <div class=" Informal Response">
+            <div class="col-md-6">
+                <form id="tempForm" onsubmit="convertTemperature(event)">
+                    <div class="mb-3">
+                        <label for="temperature" class="form-label">Nhập nhiệt độ</label>
+                        <input type="text" class="form-control" id="temperature" name="temperature" 
+                               placeholder="Nhập số" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Loại chuyển đổi</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="type" id="c2f" value="c2f" required>
+                                <label class="form-check-label" for="c2f">C sang F</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="type" id="f2c" value="f2c" required>
+                                <label class="form-check-label" for="f2c">F sang C</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Chuyển đổi</button>
+                    </div>
+                </form>
+                
+                <div id="errorMessage" class="alert alert-danger mt-3 d-none"></div>
+                <div id="resultMessage" class="alert alert-success mt-3 d-none"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function initRequestCounter() {
+            let requestCount = localStorage.getItem('requestCount');
+            if (requestCount === null) {
+                requestCount = 0;
+            } else {
+                requestCount = parseInt(requestCount);
+            }
+            document.getElementById('requestCount').textContent = requestCount;
+        }
+        function incrementRequestCounter() {
+            let requestCount = parseInt(localStorage.getItem('requestCount') || '0');
+            requestCount++;
+            localStorage.setItem('requestCount', requestCount);
+            document.getElementById('requestCount').textContent = requestCount;
+        }
+
+        function convertTemperature(event) {
+            event.preventDefault();
+            
+            const tempInput = document.getElementById('temperature').value;
+            const type = document.querySelector('input[name="type"]:checked')?.value;
+            const errorMessage = document.getElementById('errorMessage');
+            const resultMessage = document.getElementById('resultMessage');
+
+            errorMessage.classList.add('d-none');
+            resultMessage.classList.add('d-none');
+
+
+            if (!tempInput || !type) {
+                errorMessage.textContent = 'Vui lòng nhập nhiệt độ và chọn loại chuyển đổi!';
+                errorMessage.classList.remove('d-none');
+                return;
+            }
+
+            const temp = parseFloat(tempInput);
+            if (isNaN(temp)) {
+                errorMessage.textContent = 'Nhiệt độ phải là một số hợp lệ!';
+                errorMessage.classList.add('d-none');
+                return;
+            }
+            incrementRequestCounter();
+            let result, unit;
+            if (type === 'c2f') {
+                result = (temp * 9 / 5) + 32;
+                unit = '°F';
+            } else {
+                result = (temp - 32) * 5 / 9;
+                unit = '°C';
+            }
+            resultMessage.textContent = `Kết quả: ${result.toFixed(2)} ${unit}`;
+            resultMessage.classList.remove('d-none');
+        }
+        window.onload = initRequestCounter;
+    </script>
+</body>
+</html>
