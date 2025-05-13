@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ứng dụng đếm ký tự</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 50px;
+            }
+            h1 {
+                color: blue;
+            }
+            .error {
+                color: red;
+            }
+            input, button {
+                padding: 10px;
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Ứng dụng đếm số ký tự</h1>
+        <form action="count" method="post">
+            <label for="inputString">Nhập chuỗi:</label>
+            <input type="text" id="inputString" name="inputString" required>
+            <button type="submit">Kiểm tra</button>
+        </form>
+
+        <div id="result"></div>
+
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('error')) {
+                document.getElementById('result').innerHTML = `<p class="error">${params.get('error')}</p>`;
+            }
+        </script>
+    </body>
+</html>

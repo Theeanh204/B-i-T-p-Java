@@ -1,0 +1,5 @@
+InputFilter.class
+SessionAttributeListener.class
+com\mycompany\mavenproject2\resources\JakartaEE9Resource.class
+com\mycompany\mavenproject2\JakartaRestConfiguration.class
+CountServlet.class
